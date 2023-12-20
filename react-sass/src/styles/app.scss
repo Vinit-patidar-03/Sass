@@ -1,0 +1,77 @@
+//Variables
+$color1: red;
+$colors: green, orange, yellow, pink;
+// $colors will be treated as an array.
+
+//importing variables defined using partials.
+//if variable names get same in two partial files then overwrite problem will occur.
+// @import "_colors";
+// @import "_colors1";
+//To overcome overwrite problem we can import partial by following way.
+@use "_colors" as color;
+@use "_colors1" as color1;
+
+body{
+    background-color: $color1;
+    background-color: nth($colors, 2);
+    //This is how we can access the color of an array and here indexing starts from 1.
+}
+
+//Nesting
+.productCard{
+    max-width: 600px;
+    background-color: color.$red;
+
+    > a{
+        color: color1.$blue;
+    }
+
+    > h2{
+        color: color1.$orange;
+        font: {
+            size: 1rem;
+            family: sans-serif;
+            weight: bold;
+        }
+
+        text: {
+            align: center; 
+        }
+    }
+
+    button{
+        background-color: color1.$red;
+        padding: 1rem;
+        color: white;
+        border-radius: 100%;
+
+        &:hover{
+            opacity: 0.5;
+        }
+    }
+
+    //template, it will compile only when it is used.
+    @mixin customFunc($color:crimson){
+        background-color: $color;
+        padding: 1rem;
+        color: white;
+        border-radius: 100%;
+    }
+
+    //Abstract class
+    %custom{
+        background-color: color1.$red;
+        padding: 1rem;
+        color: white;
+        border-radius: 100%;
+    }
+
+    // p{
+    //     @extend button;
+    // }
+
+    p{
+        // @extend %custom;
+        @include customFunc(gray);
+    }
+}
